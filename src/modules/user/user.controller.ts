@@ -52,9 +52,45 @@ const getUserById = async (req: Request, res: Response) => {
     }
 };
 
+const updateUser = async (req: Request, res: Response) => {
+    try {
+        const result = await userService.updateUser(Number(req.params.id), req.body);
+        res.status(201).json({
+            success: true,
+            message: "user update success",
+            data: result
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "something went Wrong!!",
+            error: error
+        })
+    }
+};
+
+const deleteUser = async (req: Request, res: Response) => {
+    try {
+        const result = await userService.deleteUser(Number(req.params.id),);
+        res.status(200).json({
+            success: true,
+            message: "user delete success",
+            data: result
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "something went Wrong!!",
+            error: error
+        })
+    }
+};
+
 
 export const userController = {
     createUser,
     getAllFromDB,
-    getUserById
+    getUserById,
+    updateUser,
+    deleteUser
 }
