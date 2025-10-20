@@ -109,7 +109,7 @@ By using this project, students will learn how to:
 <!-- how to prisma code  -->
 1. create prisma schema
 2. migrate schema --> npx prisma migrate dev
-3. generate
+3. generate --> npx  prisma generate
 4. start query
 
 
