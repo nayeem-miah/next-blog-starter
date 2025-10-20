@@ -132,3 +132,9 @@ By using this project, students will learn how to:
 
 <!--  searching -->
 * post?search=THis is post number 3
+const search --> req.query.search || "";
+---> using where
+
+<!-- filtering -->
+<!-- sorting -->
+<!-- meta data -->

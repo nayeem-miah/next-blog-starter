@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { postService } from "./post.service";
+import { stringify } from "querystring";
 
 const createPost = async (req: Request, res: Response) => {
     try {
@@ -24,8 +25,12 @@ const getAllPosts = async (req: Request, res: Response) => {
         const page = Number(req.query.page) || 1;
         const limit = Number(req.query.limit) || 10;
         const search = (req.query.search as string) || "";
+        const isFeatured = req.query.isFeatured ? req.query.isFeatured === "true" : undefined;
+        const tags = req.query.tags ? (req.query.tags as string).split(",") : [];
 
-        const result = await postService.getAllPosts({ page, limit, search })
+
+
+        const result = await postService.getAllPosts({ page, limit, search, isFeatured, tags })
         res.status(200).json({
             success: true,
             message: "all post success",

@@ -35,36 +35,46 @@ const createPost = async (payload: Prisma.PostCreateInput): Promise<Post> => {
 
 // ! implement pagination
 const getAllPosts = async ({
-    page,
-    limit,
-    search
+    page = 1,
+    limit = 10,
+    search,
+    isFeatured,
+    tags,
+    sortOrder
 }: {
-    page: number,
-    limit: number,
-    search: string
+    page?: number;
+    limit?: number;
+    search?: string;
+    isFeatured?: boolean;
+    tags?: string[];
+    sortOrder?: string;
 }) => {
 
     // console.log({ page, limit });
+    // console.log({ sortOrder });
 
     const skip = (page - 1) * limit;
+
+    const where: any = {
+        AND: [
+            search && {
+                OR: [
+                    { title: { contains: search, mode: "insensitive" } },
+                    { content: { contains: search, mode: "insensitive" } }
+                ],
+            },
+            typeof isFeatured === "boolean" && { isFeatured },
+            tags && tags.length > 0 && { tags: { hasEvery: tags } }
+        ].filter(Boolean)
+    }
+
+
 
     const result = await prisma.post.findMany({
         skip: skip,
         take: limit,
-        where: {
-            OR: [
-                {
-                    title: {
-                        contains: search,
-                        mode: "insensitive"
-                    },
-                    content: {
-                        contains: search,
-                        mode: "insensitive"
-                    },
-                }
-            ]
-        },
+        where,
+        orderBy: { createdAt: "desc" },
         include: {
             author: {
                 select: {
@@ -75,9 +85,19 @@ const getAllPosts = async ({
                 }
             }
         }
-
     });
-    return result;
+
+    const total = await prisma.post.count({ where });
+
+    return {
+        data: result,
+        pagination: {
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit)
+        }
+    };
 }
 
 const getSinglePost = async (id: number) => {
