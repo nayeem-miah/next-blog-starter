@@ -20,6 +20,27 @@ const loginWithEmailAndPassword = async (req: Request, res: Response) => {
     }
 };
 
+const authWithGoogle = async (req: Request, res: Response) => {
+    try {
+        const result = await AuthService.authWithGoogle(req.body);
+        res.status(201).json({
+            success: true,
+            message: "user login success",
+            data: result
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "something went Wrong!!",
+            error: error
+        })
+    }
+};
+
+
+
 export const AuthController = {
-    loginWithEmailAndPassword
+    loginWithEmailAndPassword,
+    authWithGoogle
 }

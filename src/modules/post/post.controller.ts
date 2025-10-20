@@ -101,11 +101,31 @@ const updatePost = async (req: Request, res: Response) => {
     }
 };
 
+const getBlogStats = async (req: Request, res: Response) => {
+
+    try {
+        const result = await postService.getBlogStats();
+        res.status(201).json({
+            success: true,
+            message: "get blog stats success",
+            data: result
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "something went Wrong!!",
+            error: error
+        })
+    }
+};
+
 
 export const postController = {
     createPost,
     getAllPosts,
     getSinglePost,
     deletePost,
-    updatePost
+    updatePost,
+    getBlogStats
 }
