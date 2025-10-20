@@ -111,3 +111,24 @@ By using this project, students will learn how to:
 2. migrate schema --> npx prisma migrate dev
 3. generate
 4. start query
+
+
+<!-- pagination -->
+
+* query --> post?page=1&limit=3
+---> go to controller 
+---> const page = req.query.page and const limit = req.query.limit
+---> page 1, 2, 3, 4, 5 ,... ...
+---> limit 5
+---> skip 0 ,5, 10, 15, 20, 25, ... ...
+---> data 1-5, 6-10, 11-15, 16-20, 21-25, ... ...
+
+---> skip=(page - 1) * limit
+---> skip = (1 - 1) * 5= 0
+---> skip = (2 - 1) * 5= 5
+---> skip = (3 - 1) * 5= 10
+---> skip = (4 - 1) * 5= 15
+
+
+<!--  searching -->
+* post?search=THis is post number 3
