@@ -138,3 +138,7 @@ const search --> req.query.search || "";
 <!-- filtering -->
 <!-- sorting -->
 <!-- meta data -->
+
+<!-- view count  -->
+* fetching single data and count views increment: 1
+* use transaction

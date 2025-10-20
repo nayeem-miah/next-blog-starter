@@ -101,22 +101,36 @@ const getAllPosts = async ({
 }
 
 const getSinglePost = async (id: number) => {
-    const result = await prisma.post.findUnique({
-        where: {
-            id
-        },
-        include: {
-            author: {
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    role: true,
+
+    // * using transaction 
+    return await prisma.$transaction(async (tx) => {
+        // ? increment views 
+        await tx.post.update({
+            where: { id },
+            data: {
+                views: {
+                    increment: 1
                 }
             }
-        }
-    });
-    return result;
+        })
+
+        return await tx.post.findUnique({
+            where: {
+                id
+            },
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        role: true,
+                    }
+                }
+            }
+        });
+    })
+    // return result;
 }
 
 const deletePost = async (id: number) => {
