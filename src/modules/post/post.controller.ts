@@ -4,11 +4,11 @@ import { stringify } from "querystring";
 
 const createPost = async (req: Request, res: Response) => {
     try {
-        const result = await postService.createPost(req.body)
+        const result = await postService.createPost(req.body);
         res.status(201).json({
             success: true,
             message: "post create success",
-            error: result
+            data: result
         })
     } catch (error) {
         console.log(error);
@@ -52,7 +52,7 @@ const getSinglePost = async (req: Request, res: Response) => {
         res.status(200).json({
             success: true,
             message: "get single post success",
-            error: result
+            data: result
         })
     } catch (error) {
         console.log(error);
